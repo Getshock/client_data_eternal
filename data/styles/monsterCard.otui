@@ -1,0 +1,34 @@
+@declareWidget monsterCard < UIWidget
+  height: 64
+  margin-bottom: 6
+  layout: horizontalBox
+  background-color: #222222CC
+  border-width: 1
+  border-color: #555555
+  border-radius: 4
+  padding: 6
+
+  UIWidget
+    id: monsterIcon
+    size: 52 52
+    background-color: #333333
+    border-width: 1
+    border-color: #555555
+    border-radius: 3
+
+  UIWidget
+    id: infoArea
+    margin-left: 8
+    layout: verticalBox
+
+    UILabel
+      id: monsterName
+      color: #FFD700
+
+    UILabel
+      id: monsterCycle
+      color: #CCCCCC
+
+    UILabel
+      id: monsterProgress
+      color: #AAAAAA

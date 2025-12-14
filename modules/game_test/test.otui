@@ -1,0 +1,66 @@
+MainWindow
+  id: testWindow
+  size: 750 600
+  text: "Bestiary"
+  visible: false
+  padding: 10
+  background-color: #1a1a1aDD
+  border-width: 2
+  border-color: #444444
+  border-radius: 6
+
+  Label
+    id: titleLabel
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 20
+    text: "Bestiary Progress"
+    font: Verdana Bold-11px-wheel
+    color: #FFD700
+
+  ComboBox
+    id: sortComboBox
+    width: 150
+    anchors.top: parent.top
+    anchors.right: parent.right
+    margin-top: 20
+    margin-right: 5
+
+  UIScrollArea
+    id: monsterScroll
+    anchors.top: sortComboBox.bottom
+    anchors.left: parent.left
+    anchors.right: monsterScrollbar.left
+    anchors.bottom: closeButton.top
+    margin-top: 10
+    margin-right: 5
+    margin-bottom: 10
+    vertical-scrollbar: monsterScrollbar
+    layout:
+      type: grid
+      cell-size: 160 200
+      cell-spacing: 10
+      flow: true
+
+  VerticalScrollBar
+    id: monsterScrollbar
+    anchors.top: sortComboBox.bottom
+    anchors.bottom: closeButton.top
+    anchors.right: parent.right
+    margin-top: 10
+    margin-bottom: 10
+    step: 48
+    pixels-scroll: true
+
+  UIButton
+    id: closeButton
+    anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    text: "Close"
+    width: 120
+    height: 28
+    margin-bottom: 4
+    background-color: #AA3333
+    border-width: 1
+    border-color: #662222
+    border-radius: 4

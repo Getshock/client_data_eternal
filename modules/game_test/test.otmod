@@ -1,0 +1,14 @@
+Module
+  name: game_test
+  description: Simple Test Panel
+  author: Bruno
+  sandboxed: true
+
+  scripts: [ test.lua ]
+  interfaces: [ test.otui ]
+  styles: [ bestiary_card_block.otui ]
+
+  dependencies: [ game_interface, client_topmenu ]
+
+  @onLoad: init()
+  @onUnload: terminate()

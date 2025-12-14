@@ -1,0 +1,37 @@
+BestiaryCardBlock < UIWidget
+  height: 80
+  margin-bottom: 10
+  padding: 6
+  layout: horizontalBox
+  background-color: #222222CC
+  border-width: 1
+  border-color: #555555
+  border-radius: 4
+
+  UIItem
+    id: icon
+    size: 64 64
+    background-color: #333333
+    border-width: 1
+    border-color: #555555
+    border-radius: 4
+
+  UIWidget
+    id: infoArea
+    layout: verticalBox
+    margin-left: 8
+
+    UILabel
+      id: nameLabel
+      font: Verdana Bold-11px-wheel
+      color: #FFD700
+
+    UILabel
+      id: cycleLabel
+      font: Verdana Bold-11px-wheel
+      color: #CCCCCC
+
+    UILabel
+      id: progressLabel
+      font: Verdana Bold-11px-wheel
+      color: #AAAAAA

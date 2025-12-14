@@ -1,0 +1,68 @@
+BestiaryCardBlock < UIWidget
+  width: 160
+  height: 200
+  background-color: #292929
+  border-width: 1
+  border-color: #444444
+  border-radius: 5
+  margin: 5
+
+  UILabel
+    id: nameLabel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 10
+    text-align: center
+    font: verdana-11px-rounded
+    color: #FFD700
+
+  UIWidget
+    id: icon
+    anchors.top: nameLabel.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 15
+    width: 64
+    height: 64
+    background-color: #00000055
+    border: 1 #444444
+
+  UILabel
+    id: cycleLabel
+    anchors.top: icon.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 15
+    font: verdana-11px-rounded
+    color: #CCCCCC
+    text-align: center
+
+  UIWidget
+    id: progressBarBg
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-left: 15
+    margin-right: 15
+    margin-bottom: 15
+    height: 18
+    background-color: #111111
+    border-width: 1
+    border-color: #333333
+
+    UIWidget
+      id: progressBarFill
+      anchors.left: parent.left
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
+      width: 0
+      background-color: #44AA44
+      margin: 1
+
+    UILabel
+      id: progressText
+      anchors.fill: parent
+      text-align: center
+      font: verdana-11px-rounded
+      color: #FFFFFF
+      text: "0%"
+      margin-top: 2
