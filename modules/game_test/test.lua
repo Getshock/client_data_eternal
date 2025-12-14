@@ -35,6 +35,11 @@ function init()
     if closeButton then
         closeButton.onClick = function() window:hide() end
     end
+    
+    -- Fechar com ESC
+    window.onEscape = function()
+        window:hide()
+    end
 
     -- Área onde aparecem os cards
     monsterList = window:getChildById("monsterScroll")
@@ -149,7 +154,7 @@ function Test.toggleMarker(name)
         local count = 0
         for _ in pairs(markers) do count = count + 1 end
         
-        if count >= 4 then
+        if count >= 6 then
             -- Feedback visual ou log
             return
         end
@@ -231,13 +236,13 @@ function Test.updateList(list)
 
         if block then
             -- Pegar widgets internos
-            local icon      = block:getChildById("icon")
-            local name      = block:getChildById("nameLabel")
-            local cycle     = block:getChildById("cycleLabel")
-            local pbBg      = block:getChildById("progressBarBg")
+            local icon      = block:getChildById("innerPanel"):getChildById("iconBg"):getChildById("icon")
+            local name      = block:getChildById("innerPanel"):getChildById("nameLabel")
+            local cycle     = block:getChildById("innerPanel"):getChildById("cycleLabel")
+            local pbBg      = block:getChildById("innerPanel"):getChildById("progressBarBg")
             local pbFill    = pbBg and pbBg:getChildById("progressBarFill")
             local pbText    = pbBg and pbBg:getChildById("progressText")
-            local markerBtn = block:getChildById("markerButton")
+            local markerBtn = block:getChildById("innerPanel"):getChildById("markerButton")
 
             -- Configurar botão de marcador
             if markerBtn then
@@ -260,8 +265,8 @@ function Test.updateList(list)
                 if not lookType then lookType = 21 end -- Fallback
 
                 local creatureWidget = g_ui.createWidget("UICreature", icon)
-                creatureWidget:setSize("64 64")
-                creatureWidget:setCreatureSize(64)
+                creatureWidget:setSize("52 52")
+                creatureWidget:setCreatureSize(52)
                 creatureWidget:setCenter(true)
                 creatureWidget:setOutfit({
                     type = lookType,
@@ -288,8 +293,11 @@ function Test.updateList(list)
                 if percent > 100 then percent = 100 end
                 if percent < 0 then percent = 0 end
                 
-                -- Max width is 128 (130 - 2 margin)
-                local maxWidth = 128 
+                -- Max width is 290 - 20 (margin) - 5 (padding) - ?
+                -- O card tem width 290. progressBarBg tem margin left/right 10.
+                -- Largura da barra de fundo = 290 - 10 - 54 (icon) - 8 (margin) - 10 (margin) = ~208 (aprox)
+                -- Vamos calcular dinamicamente se possivel, ou hardcode seguro
+                local maxWidth = pbBg:getWidth() - 2 -- margin 1 each side
                 local w = math.floor((percent / 100) * maxWidth)
                 if w < 1 then w = 1 end 
                 if percent == 0 then w = 0 end
@@ -299,11 +307,11 @@ function Test.updateList(list)
                 
                 -- Color logic
                 if percent >= 100 then
-                    pbFill:setBackgroundColor("#00FF00") -- Green
+                    pbFill:setBackgroundColor("#44AA44") -- Green
                 elseif percent >= 50 then
-                    pbFill:setBackgroundColor("#FFAA00") -- Orange
+                    pbFill:setBackgroundColor("#AA8800") -- Orange
                 else
-                    pbFill:setBackgroundColor("#FF4444") -- Red
+                    pbFill:setBackgroundColor("#AA4444") -- Red
                 end
             end
         end
