@@ -153,7 +153,7 @@ OutfitWindow < MainWindow
         spacing: 5
 
       FlatPanel
-        id: showFloor
+        id: movement
         height: 22
         padding: 5
 
@@ -162,7 +162,7 @@ OutfitWindow < MainWindow
           anchors.verticalCenter: parent.verticalCenter
           anchors.left: parent.left
           anchors.right: parent.right
-          text: Show Floor
+          text: Movement
 
       FlatPanel
         id: showOutfit
@@ -176,6 +176,18 @@ OutfitWindow < MainWindow
           anchors.right: parent.right
           text: Show Outfit
           checked: true
+
+      FlatPanel
+        id: showFloor
+        height: 22
+        padding: 5
+
+        CheckBox
+          id: check
+          anchors.verticalCenter: parent.verticalCenter
+          anchors.left: parent.left
+          anchors.right: parent.right
+          text: Show Floor
 
       FlatPanel
         id: showMount
@@ -362,18 +374,6 @@ OutfitWindow < MainWindow
             id: image
             anchors.centerIn: parent
       
-      ChaseModeBox
-        id: movement
-        anchors.top: parent.top
-        anchors.left: parent.left
-        margin-top: 3
-        margin-left: 3
-        image-color: #dfdfdf
-        tooltip: Enable/Disable movement animation
-
-        $hover:
-          image-color: #ffffff
-
       RotateButton
         anchors.left: parent.left
         margin-left: 3

@@ -296,6 +296,7 @@ end
 
 local PreviewOptions = {
     ["showFloor"] = onShowFloorChange,
+    ["movement"] = onMovementChange,
     ["showOutfit"] = onShowOutfitChange,
     ["showMount"] = onShowMountChange,
     ["showFamiliar"] = onShowFamiliarChange,
@@ -401,7 +402,7 @@ function create(player, outfitList, creatureMount, mountList, familiarList, wing
 
     configureAddons(currentOutfit.addons)
 
-    movementCheck = window.preview.panel.movement
+    movementCheck = window.preview.options.movement.check
     showFloorCheck = window.preview.options.showFloor.check
     showOutfitCheck = window.preview.options.showOutfit.check
     showMountCheck = window.preview.options.showMount.check
@@ -413,7 +414,6 @@ function create(player, outfitList, creatureMount, mountList, familiarList, wing
     showEffectsCheck = window.preview.options.showEffects.check
     showTitleCheck = window.preview.options.showTitle.check
 
-    movementCheck.onCheckChange = onMovementChange
     for _, option in ipairs(window.preview.options:getChildren()) do
         option.check.onCheckChange = PreviewOptions[option:getId()]
     end
