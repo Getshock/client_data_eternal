@@ -1595,16 +1595,6 @@ function init()
     battleWindow:setup()
     updateBattleListTitle()
     
-    battleWindow.onMousePress = function(widget, mousePos, button)
-        if button == MouseRightButton then
-            local menu = g_ui.createWidget('PopupMenu')
-            menu:addOption('Edit Name', function() mainInstance:onMenuAction('editBattleListName') end)
-            menu:display(mousePos)
-            return true
-        end
-        return false
-    end
-    
     if g_game.isOnline() then
         battleWindow:setupOnStart()
     end
