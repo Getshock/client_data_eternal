@@ -43,7 +43,7 @@ OfferButton < UIWidget
   UIItem
     id: coinIcon
     size: 12 12
-    item-id: 2160
+    image-source: /game_customstore/images/icon-tibiacointransferable
     virtual: true
     anchors.left: price.right
     anchors.verticalCenter: price.verticalCenter
@@ -93,7 +93,7 @@ HomeOfferWidget < UIWidget
   UIItem
     id: coinIcon
     size: 12 12
-    item-id: 2160
+    image-source: /game_customstore/images/icon-tibiacointransferable
     virtual: true
     anchors.left: price.right
     anchors.verticalCenter: price.verticalCenter
@@ -179,7 +179,7 @@ CustomStoreWindow < MainWindow
         anchors.verticalCenter: parent.verticalCenter
         margin-left: 5
         virtual: true
-        item-id: 2160
+        image-source: /game_customstore/images/icon-store-home
         
       Label
         text: Home
@@ -258,11 +258,10 @@ CustomStoreWindow < MainWindow
         border-width: 1
         border-color: #000000
         
-        Label
-          text: STORE BANNER (Place Image Here)
-          anchors.centerIn: parent
-          font: verdana-11px-rounded
-          color: #555555
+        UIWidget
+          image-source: /game_customstore/images/dragon
+          anchors.fill: parent
+          image-smooth: true
         
       Label
         text: Recently Added
@@ -413,8 +412,8 @@ CustomStoreWindow < MainWindow
 
     UIItem
       id: balanceIcon
-      item-id: 2160
-      size: 20 20
+      image-source: /game_customstore/images/icon-tibiacointransferable
+      size: 12 12
       anchors.verticalCenter: parent.verticalCenter
       anchors.left: parent.left
       margin-left: 15
