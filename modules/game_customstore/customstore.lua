@@ -2,46 +2,10 @@ local OPCODE_CUSTOM_STORE = 217
 
 local storeWindow = nil
 
--- Client-side Configuration (Fallback & Cache)
-local StoreConfig = {
-    categories = {
-        {id = 1, name = "Runes"},
-        {id = 2, name = "Potions"},
-        {id = 3, name = "Houses"},
-        {id = 4, name = "Exercise Weapons"}
-    },
-    offers = {
-        [1] = { -- Runes
-            {id = 101, name = "Avalanche Rune", itemId = 3161, count = 100, price = 20, description = "Deals ice damage in an area."},
-            {id = 102, name = "Stone Shower Rune", itemId = 3175, count = 100, price = 20, description = "Deals earth damage in an area."},
-            {id = 103, name = "Sudden Death Rune", itemId = 3155, count = 100, price = 20, description = "Deals heavy death damage to enemies."}
-        },
-        [2] = { -- Potions
-            {id = 201, name = "Mana Potion", itemId = 268, count = 100, price = 20, description = "Restores mana."},
-            {id = 202, name = "Great Mana Potion", itemId = 238, count = 100, price = 20, description = "Restores a large amount of mana."},
-            {id = 203, name = "Great Health Potion", itemId = 239, count = 100, price = 20, description = "Restores a large amount of health."}
-        },
-        [3] = { -- Houses (Decorations & Furniture)
-            {id = 301, name = "Blood Herb", itemId = 2798, count = 1, price = 5, description = "A rare red herb for decoration."},
-            {id = 302, name = "Golden Goblet", itemId = 5805, count = 1, price = 10, description = "A golden goblet to show off your wealth."},
-            {id = 303, name = "Demon Trophy", itemId = 7393, count = 1, price = 50, description = "A trophy from a slain demon."},
-            {id = 304, name = "Dragon Tapestry", itemId = 5614, count = 1, price = 15, description = "A beautiful tapestry depicting a dragon."},
-            {id = 305, name = "Jewel Case", itemId = 8261, count = 1, price = 5, description = "A container for your precious gems."}
-        },
-        [4] = { -- Exercise Weapons (Training)
-             {id = 401, name = "Exercise Sword", itemId = 32384, count = 500, price = 25, description = "Training sword with 500 charges."},
-             {id = 402, name = "Exercise Axe", itemId = 32385, count = 500, price = 25, description = "Training axe with 500 charges."},
-             {id = 403, name = "Exercise Club", itemId = 32386, count = 500, price = 25, description = "Training club with 500 charges."},
-             {id = 404, name = "Exercise Bow", itemId = 32387, count = 500, price = 25, description = "Training bow with 500 charges."},
-             {id = 405, name = "Exercise Wand", itemId = 32388, count = 500, price = 25, description = "Training wand with 500 charges."},
-             {id = 406, name = "Exercise Rod", itemId = 32389, count = 500, price = 25, description = "Training rod with 500 charges."},
-             {id = 407, name = "Training Dummy", itemId = 5777, count = 1, price = 100, description = "A dummy to practice your skills on."}
-        }
-    }
-}
-
-local categories = StoreConfig.categories
-local currentOffers = StoreConfig.offers -- Initialize with local offers immediately
+-- Client-side Configuration (Received from Server)
+local categories = {}
+local currentOffers = {}
+local homeConfig = {}
 local selectedCategory = nil
 local selectedOffer = nil
 
@@ -80,12 +44,7 @@ function toggle()
         storeWindow:raise()
         storeWindow:focus()
         
-        -- Always select the first category when opening
-        if #categories > 0 then
-            selectCategory(categories[1].id)
-        end
-        
-        updateCategories() -- Show local categories immediately
+        -- Request data from server
         refresh()
     end
 end
@@ -118,12 +77,16 @@ function onExtendedOpcode(protocol, opcode, buffer)
         end
         
         -- Process data if available
-        if data.categories and #data.categories > 0 then
+        if data.categories then
             categories = data.categories
         end
         
         if data.offers then
             currentOffers = data.offers
+        end
+
+        if data.homeConfig then
+            homeConfig = data.homeConfig
         end
         
         if storeWindow then
