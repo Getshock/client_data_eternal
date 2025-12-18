@@ -229,38 +229,6 @@ function init()
         return true
     end
 
-    consoleTextEdit.onKeyPress = function(self, keyCode, keyboardModifiers)
-        local keyCombo = determineKeyComboDesc(keyCode, keyboardModifiers)
-        if modules.game_actionbar and modules.game_actionbar.isHotkeyBound and modules.game_actionbar.isHotkeyBound(keyCombo) then
-            if modules.game_actionbar.executeHotkey then
-                modules.game_actionbar.executeHotkey(keyCombo, true)
-            end
-            
-            -- Schedule a text revert to remove the character if it gets added
-            local oldText = self:getText()
-            scheduleEvent(function()
-                 if consoleTextEdit:getText() ~= oldText then
-                     consoleTextEdit:setText(oldText)
-                     consoleTextEdit:setCursorPos(#oldText)
-                 end
-            end)
-            
-            return true
-        end
-        return false
-    end
-    
-    consoleTextEdit.onKeyDown = function(self, keyCode, keyboardModifiers)
-        local keyCombo = determineKeyComboDesc(keyCode, keyboardModifiers)
-        if modules.game_actionbar and modules.game_actionbar.isHotkeyBound and modules.game_actionbar.isHotkeyBound(keyCombo) then
-            if modules.game_actionbar.executeHotkey then
-                modules.game_actionbar.executeHotkey(keyCombo, false)
-            end
-            return true
-        end
-        return false
-    end
-
     g_keyboard.bindKeyPress('Shift+Up', function()
         navigateMessageHistory(1)
     end, consolePanel)
@@ -449,10 +417,6 @@ function switchChat(enabled)
         bindMovingKeys()
         consoleToggleChat:setTooltip(tr('Enable chat mode'))
         Keybind.setChatMode(CHAT_MODE.OFF)
-    end
-    
-    if modules.game_actionbar and modules.game_actionbar.refreshAllHotkeys then
-        modules.game_actionbar.refreshAllHotkeys()
     end
 end
 
