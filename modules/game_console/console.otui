@@ -353,5 +353,33 @@ Panel
     color: #c0c0c0ff
     font: cipsoftFont
     !text: tr('Chat Off')
-    &isChecked: false
+    consoleTextEdit.onKeyPress = function(self, keyCode, keyboardModifiers)
+        local keyCombo = determineKeyComboDesc(keyCode, keyboardModifiers)
+        if modules.game_actionbar and modules.game_actionbar.isHotkeyBound and modules.game_actionbar.isHotkeyBound(keyCombo) then
+            return true
+        end
+        return false
+    end
+    
+    consoleTextEdit.onKeyDown = function(self, keyCode, keyboardModifiers)
+        local keyCombo = determineKeyComboDesc(keyCode, keyboardModifiers)
+        if modules.game_actionbar and modules.game_actionbar.isHotkeyBound and modules.game_actionbar.isHotkeyBound(keyCombo) then
+            return true
+        end
+        return false
+    end    consoleTextEdit.onKeyPress = function(self, keyCode, keyboardModifiers)
+        local keyCombo = determineKeyComboDesc(keyCode, keyboardModifiers)
+        if modules.game_actionbar and modules.game_actionbar.isHotkeyBound and modules.game_actionbar.isHotkeyBound(keyCombo) then
+            return true
+        end
+        return false
+    end
+    
+    consoleTextEdit.onKeyDown = function(self, keyCode, keyboardModifiers)
+        local keyCombo = determineKeyComboDesc(keyCode, keyboardModifiers)
+        if modules.game_actionbar and modules.game_actionbar.isHotkeyBound and modules.game_actionbar.isHotkeyBound(keyCombo) then
+            return true
+        end
+        return false
+    end    &isChecked: false
     @onClick: modules.game_console.toggleChat(false)

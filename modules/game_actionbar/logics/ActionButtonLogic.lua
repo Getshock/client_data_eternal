@@ -117,21 +117,21 @@ local function bindHotkey(button, hotkey)
 
     local combo = hotkey
     g_keyboard.bindKeyPress(combo, function()
-        if not modules.game_hotkeys.canPerformKeyCombo(combo) then
+        if modules.game_hotkeys.areHotkeysDisabled() then
             return
         end
         onExecuteAction(button, true)
     end, gameRootPanel)
 
     g_keyboard.bindKeyDown(combo, function()
-        if not modules.game_hotkeys.canPerformKeyCombo(combo) then
+        if modules.game_hotkeys.areHotkeysDisabled() then
             return
         end
         onExecuteAction(button, false)
     end, gameRootPanel)
 
     g_keyboard.bindKeyUp(combo, function()
-        if not modules.game_hotkeys.canPerformKeyCombo(combo) then
+        if modules.game_hotkeys.areHotkeysDisabled() then
             return
         end
         onCheckKeyUp(button)

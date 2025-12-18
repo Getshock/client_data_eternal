@@ -111,6 +111,27 @@ local function isHotkeyUsedByKeybinds(keyCombo)
     return false
 end
 
+function isHotkeyBound(keyCombo)
+    if not keyCombo or keyCombo == "" then
+        return false
+    end
+    
+    -- Check if it is bound in action bars
+    return getUsedHotkeyButton(keyCombo) ~= nil
+end
+
+function executeHotkey(keyCombo, isPress)
+    if not keyCombo or keyCombo == "" then
+        return false
+    end
+    local button = getUsedHotkeyButton(keyCombo)
+    if button then
+        onExecuteAction(button, isPress)
+        return true
+    end
+    return false
+end
+
 function removeHotkeyFromActionBar(keyCombo)
     if not keyCombo or keyCombo == "" then
         return false

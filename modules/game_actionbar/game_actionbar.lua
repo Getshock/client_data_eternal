@@ -489,6 +489,14 @@ function updateInventoryItems(_)
     end
 end
 
+function refreshAllHotkeys()
+    for _, actionbar in pairs(activeActionBars) do
+        for _, button in pairs(actionbar.tabBar:getChildren()) do
+            updateButton(button)
+        end
+    end
+end
+
 -- Export function for external modules to call when panel visibility changes
 function updateVisibleWidgetsExternal()
     -- Call the updateVisibleWidgets function from ActionBarLayout.lua
