@@ -1,6 +1,6 @@
 OfferButton < UIWidget
   background-color: #222222
-  size: 150 64
+  size: 225 64
   border-width: 1
   border-color: #000000
   focusable: true
@@ -32,11 +32,11 @@ OfferButton < UIWidget
 
   Label
     id: price
-    anchors.right: parent.right
-    anchors.bottom: parent.bottom
-    margin-right: 25
-    margin-bottom: 8
-    text-align: right
+    anchors.left: item.right
+    anchors.bottom: item.bottom
+    margin-left: 10
+    text-align: left
+    text-auto-resize: true
     color: #ffd700
     font: verdana-11px-rounded
     
@@ -75,20 +75,21 @@ HomeOfferWidget < UIWidget
     anchors.top: parent.top
     anchors.right: parent.right
     margin-left: 10
-    margin-top: 10
+    margin-top: 12
+    margin-right: 5
     font: Verdana Bold-11px
     color: #55ff55
     text-align: left
     
   Label
     id: price
-    anchors.right: parent.right
-    anchors.bottom: parent.bottom
-    margin-right: 25
-    margin-bottom: 10
+    anchors.left: item.right
+    anchors.bottom: item.bottom
+    margin-left: 10
     font: verdana-11px-rounded
     color: #ffd700
-    text-align: right
+    text-align: left
+    text-auto-resize: true
     
   UIItem
     id: coinIcon
@@ -100,45 +101,74 @@ HomeOfferWidget < UIWidget
     margin-left: 3
     phantom: true
 
+  Button
+    id: buyButton
+    !text: tr('Buy')
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 5
+    margin-bottom: 5
+    size: 60 20
+    image-color: #44AD25
+    color: #ffffff
+    font: cipsoftFont
+    $hover:
+      image-color: #55C035
+    $pressed:
+      image-color: #339015
+
 CategoryButton < UIWidget
   height: 32
-  background-color: alpha
-  border-width: 0
+  anchors.left: parent.left
+  anchors.right: parent.right
+  margin-left: 5
+  margin-right: 5
+  margin-bottom: 4
+  text-align: left
+  text-offset: 48 0
+  color: #aaaaaa
+  image-source: /images/ui/button
+  image-clip: 0 0 22 23
+  image-border: 3
+  font: verdana-11px-rounded
   focusable: true
-  
-  $focus:
-    background-color: #ffffff22
+
+  $hover !checked:
+    image-clip: 0 23 22 23
+    color: #ffffff
+
+  $pressed:
+    image-clip: 0 46 22 23
+    text-offset: 48 0
+    color: #ffffff
+
+  $checked:
+    image-clip: 0 46 22 23
+    text-offset: 48 0
+    color: #ffffff
+    image-color: #99ff99
 
   UIItem
     id: icon
-    size: 20 20
+    size: 32 32
     anchors.left: parent.left
     anchors.verticalCenter: parent.verticalCenter
-    margin-left: 5
+    margin-left: 10
     virtual: true
     phantom: true
-
-  Label
-    id: text
-    anchors.left: icon.right
-    anchors.right: parent.right
-    anchors.verticalCenter: parent.verticalCenter
-    margin-left: 5
-    font: verdana-11px-rounded
-    color: #aaaaaa
-    text-align: left
-
-  $hover:
-    background-color: #ffffff11
-    
-    Label
-      color: #ffffff
+    opacity: 0.8
 
   $checked:
-    background-color: #ffffff22
-    
-    Label
-      color: #ffd700
+    UIItem
+      opacity: 1.0
+
+  $hover:
+    UIItem
+      opacity: 1.0
+
+  $pressed:
+    UIItem
+      opacity: 1.0
 
 // Main Window Layout
 
@@ -160,34 +190,16 @@ CustomStoreWindow < MainWindow
     border-width: 1
     border-color: #00000044
 
-    UIWidget
+    CategoryButton
       id: homeButton
-      height: 32
       anchors.top: parent.top
-      anchors.left: parent.left
-      anchors.right: parent.right
-      background-color: alpha
-      focusable: true
-      
-      $focus:
-        background-color: #ffffff22
-        
+      margin-top: 5
+      !text: tr('Home')
+
       UIItem
         id: icon
-        size: 20 20
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-        margin-left: 5
-        virtual: true
         image-source: /game_customstore/images/icon-store-home
-        
-      Label
-        text: Home
-        anchors.left: icon.right
-        anchors.verticalCenter: parent.verticalCenter
-        margin-left: 5
-        font: verdana-11px-rounded
-        color: #aaaaaa
+        virtual: false
 
     ScrollablePanel
       id: categoriesList
@@ -199,7 +211,6 @@ CustomStoreWindow < MainWindow
       margin-top: 5
       layout:
         type: verticalBox
-        spacing: 1
 
     VerticalScrollBar
       id: leftScroll
@@ -219,17 +230,23 @@ CustomStoreWindow < MainWindow
       
       TextEdit
         id: searchInput
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        height: 22
+        padding-top: 4
+        padding-left: 6
+        padding-bottom: 6
         font: verdana-11px-rounded
         !placeholder: tr('Type to search')
         
       UIWidget
         id: searchIcon
-        size: 16 16
+        size: 20 20
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        margin-right: 5
-        image-source: /images/game/actionbar/lenshelp-icon-arrow-left
+        margin-right: 1
+        image-source: /game_customstore/images/search_button
         phantom: true
 
   // 2. RIGHT PANEL (Content)
@@ -349,24 +366,23 @@ CustomStoreWindow < MainWindow
           id: descLabel
           text: Description:
           anchors.top: prev.bottom
-          anchors.left: parent.left
+          anchors.horizontalCenter: parent.horizontalCenter
           margin-top: 15
-          margin-left: 10
           color: #aaaaaa
     
-        UITextEdit
+        Label
           id: detailDescription
-          anchors.top: prev.bottom
+          anchors.top: descLabel.bottom
           anchors.left: parent.left
           anchors.right: parent.right
-          anchors.bottom: buyButton.top
-          margin: 5
-          margin-bottom: 10
-          editable: false
-          focusable: false
+          margin-left: 5
+          margin-right: 5
+          margin-top: 5
           text-wrap: true
+          text-align: center
+          text-auto-resize: true
           font: verdana-11px-rounded
-          background-color: alpha
+          color: #ffffff
     
         Button
           id: buyButton
@@ -387,7 +403,7 @@ CustomStoreWindow < MainWindow
         vertical-scrollbar: prodScroll
         layout:
           type: grid
-          cell-size: 150 64
+          cell-size: 225 64
           cell-spacing: 5
           flow: true
           

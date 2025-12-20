@@ -136,7 +136,7 @@ function buildUI()
     -- 2. Setup Categories
     for _, cat in ipairs(categories) do
         local btn = g_ui.createWidget('CategoryButton', catList)
-        btn:getChildById('text'):setText(cat.name)
+        btn:setText(cat.name)
         
         if cat.icon and tonumber(cat.icon) then
             btn:getChildById('icon'):setItemId(tonumber(cat.icon))
@@ -163,24 +163,16 @@ function updateCategorySelection(catId)
     
     -- Handle Home Button selection
     local homeBtn = storeWindow:recursiveGetChildById('homeButton')
-    if catId == nil then -- Home
-        homeBtn:setOn(true) -- Assuming setOn triggers checked style or use setChecked
-        homeBtn:setChecked(true)
-    else
-        homeBtn:setOn(false)
-        homeBtn:setChecked(false)
-    end
+    local isHome = (catId == nil)
+    if homeBtn.setOn then homeBtn:setOn(isHome) end
+    homeBtn:setChecked(isHome)
     
     -- Handle other categories
     local catList = storeWindow:recursiveGetChildById('categoriesList')
     for _, child in ipairs(catList:getChildren()) do
-        if child.categoryId == catId then
-            child:setChecked(true)
-            if child.setOn then child:setOn(true) end
-        else
-            child:setChecked(false)
-            if child.setOn then child:setOn(false) end
-        end
+        local isSelected = (child.categoryId == catId)
+        child:setChecked(isSelected)
+        if child.setOn then child:setOn(isSelected) end
     end
 end
 
@@ -279,18 +271,13 @@ function setupHomeOfferWidget(widget, prod)
     local item = widget:getChildById('item')
     local name = widget:getChildById('name')
     local price = widget:getChildById('price')
+    local buyButton = widget:getChildById('buyButton')
     
     item:setItemId(prod.image_id)
     name:setText(prod.name)
     price:setText(prod.price) -- Coin icon is separate
     
-    -- On Home, clicking might open details in a modal or switch to category view
-    -- For now, let's switch to category view and select it, or just buy directly?
-    -- User said "ao clicar... mostrará os detalhes".
-    -- Let's just find the category and switch to it? Or just show a modal?
-    -- Easiest: Select it in the background and show details panel? No, details panel is in ShopView.
-    -- Let's switch to ShopView -> Category -> Select Product
-    widget.onClick = function() 
+    local function goToProduct()
         -- Find category
         local cat = nil
         for _, c in ipairs(categories) do
@@ -305,6 +292,12 @@ function setupHomeOfferWidget(widget, prod)
             selectProduct(prod)
         end
     end
+
+    if buyButton then
+        buyButton.onClick = goToProduct
+    end
+    
+    widget.onClick = goToProduct
 end
 
 function openBuyCoins()
@@ -348,10 +341,17 @@ function selectProduct(prod)
     detailItem:setItemId(prod.image_id)
     detailName:setText(prod.name)
     detailPrice:setText(prod.price .. " coins")
-    detailDescription:setText(prod.description)
+    
+    local fullDesc = prod.description
+    if prod.count then
+        fullDesc = fullDesc .. "\nAmount: " .. prod.count .. "x"
+    else
+        fullDesc = fullDesc .. "\nAmount: 1x"
+    end
+    detailDescription:setText(fullDesc)
     
     buyButton:setEnabled(true)
-    buyButton.onClick = function() buySelected(prod) end
+    buyButton.onClick = function() buySelected(prod, buyButton) end
 end
 
 function clearDetails()
@@ -372,13 +372,19 @@ function clearDetails()
     buyButton:setEnabled(false)
 end
 
-function buySelected(prod)
+function buySelected(prod, loadingButton)
     if not prod then return end
     
     -- Optimistic UI update or lock button
-    local buyButton = storeWindow:recursiveGetChildById('buyButton')
-    buyButton:setEnabled(false)
-    buyButton:setText("Buying...")
+    local buyButton = loadingButton
+    if not buyButton then
+        buyButton = storeWindow:recursiveGetChildById('buyButton')
+    end
+
+    if buyButton then
+        buyButton:setEnabled(false)
+        buyButton:setText("Buying...")
+    end
     
     local payload = {
         player_id = playerId,
@@ -388,10 +394,9 @@ function buySelected(prod)
     HTTP.addCustomHeader("Content-Type", "application/json")
     HTTP.postJSON(BACKEND_URL .. "/store/buy", json.encode(payload), function(data, err)
         if storeWindow then
-            local btn = storeWindow:recursiveGetChildById('buyButton')
-            if btn then
-                btn:setText(tr('Buy'))
-                btn:setEnabled(true)
+            if buyButton then
+                buyButton:setText(tr('Buy'))
+                buyButton:setEnabled(true)
             end
         end
         
